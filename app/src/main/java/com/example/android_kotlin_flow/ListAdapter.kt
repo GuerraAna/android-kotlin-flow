@@ -6,10 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android_kotlin_flow.databinding.ListItemMainBinding
 
-internal class ListAdapter(
-	private val context: Context,
-	private val listOfValues: List<String>
-) : RecyclerView.Adapter<ListViewHolder>() {
+internal class ListAdapter(private val context: Context) : RecyclerView.Adapter<ListViewHolder>() {
+
+	private val listOfValues: MutableList<String> = mutableListOf()
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
 		val inflater = LayoutInflater.from(context)
@@ -19,10 +18,13 @@ internal class ListAdapter(
 	}
 
 	override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-		listOfValues[position].let { value ->
-			holder.bind(value)
-		}
+		holder.bind(listOfValues[position])
 	}
 
-	override fun getItemCount(): Int = listOfValues.size
+	override fun getItemCount(): Int = listOfValues.count()
+
+	fun addInList(itemValue: String) {
+		listOfValues.add(itemValue)
+		notifyItemInserted(itemCount)
+	}
 }
